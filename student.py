@@ -368,16 +368,16 @@ class Student:
                 if delete > 0:
                     conn = mysql.connector.connect(host="localhost", user="root", password="root", database="face_recognizer")
                     my_cursor = conn.cursor()
-                    sql = "DELETE FROM student WHERE studentID=%s"
+                    sql = "delete from student where studentID=%s"
                     val = (self.var_studentID.get(),)
                     my_cursor.execute(sql, val)
-                    conn.commit()
-                    conn.close()
-                    messagebox.showinfo("Delete", "Student Details Successfully Deleted", parent=self.root)
-                    self.fetch_data()  # Refresh the table view
                 else:
                     if not delete:
                         return
+                conn.commit()
+                self.fetch_data()
+                conn.close()
+                messagebox.showinfo("Delete", "Student Details Successfully Deleted", parent=self.root)
             except Exception as es:
                 messagebox.showerror("Error", f"Due To : {str(es)}", parent=self.root)
 
