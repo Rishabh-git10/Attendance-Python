@@ -2,6 +2,7 @@ from tkinter import *
 from PIL import Image, ImageTk
 from tkinter import ttk
 from student import Student
+import os
 
 class Face_Recognition_System:
     def __init__(self, root):
@@ -82,10 +83,10 @@ class Face_Recognition_System:
         b5_1.place(x=900, y=450, width=150, height=40)
 
         # Photos Button
-        b6 = Button(bg_img, image=self.photoimg4, cursor="hand2")
+        b6 = Button(bg_img, image=self.photoimg4, cursor="hand2", command=self.open_img)
         b6.place(x=100, y=300, width=150, height=150)
 
-        b6_1 = Button(bg_img, text="Photos", cursor="hand2", font=("times new roman", 15, "bold"))
+        b6_1 = Button(bg_img, text="Photos", cursor="hand2", command=self.open_img, font=("times new roman", 15, "bold"))
         b6_1.place(x=100, y=450, width=150, height=40)
 
         # Developer Button
@@ -101,6 +102,10 @@ class Face_Recognition_System:
 
         b8_1 = Button(bg_img, text="Exit", cursor="hand2", font=("times new roman", 15, "bold"))
         b8_1.place(x=600, y=450, width=150, height=40)
+
+    def open_img(self):
+        os.startfile("data")
+
 
     def student_details(self):
         self.new_window = Toplevel(self.root)
