@@ -18,7 +18,7 @@ class Student:
         self.var_semester = StringVar()
         self.var_studentID = StringVar()
         self.var_studentName = StringVar()
-        self.var_div = StringVar()
+        self.var_division = StringVar()
         self.var_roll = StringVar()
         self.var_teacher = StringVar()
         self.var_teacherEmail = StringVar()
@@ -133,7 +133,7 @@ class Student:
         studentDivision_label = Label(class_Student_frame, text="Division", font=("times new roman", 12, "bold"), bg="white")
         studentDivision_label.grid(row=1, column=0, padx=10, sticky=W)
 
-        studentDivision_entry = ttk.Entry(class_Student_frame, textvariable=self.var_div, width=20, font=("times new roman", 12, "bold"))
+        studentDivision_entry = ttk.Entry(class_Student_frame, textvariable=self.var_division, width=20, font=("times new roman", 12, "bold"))
         studentDivision_entry.grid(row=1, column=1, padx=2, pady=10, sticky=W)
         
         # Roll No
@@ -173,13 +173,13 @@ class Student:
         save_btn = Button(btn_frame, text="Save", command=self.add_data, width=15, font=("times new roman", 12, "bold"), bg="blue", fg="white")
         save_btn.grid(row=0, column=0)
 
-        update_btn = Button(btn_frame, text="Update", width=15, font=("times new roman", 12, "bold"), bg="blue", fg="white")
+        update_btn = Button(btn_frame, text="Update", command=self.update_data, width=15, font=("times new roman", 12, "bold"), bg="blue", fg="white")
         update_btn.grid(row=0, column=1)
 
-        delete_btn = Button(btn_frame, text="Delete", width=15, font=("times new roman", 12, "bold"), bg="blue", fg="white")
+        delete_btn = Button(btn_frame, text="Delete", command=self.delete_data, width=15, font=("times new roman", 12, "bold"), bg="blue", fg="white")
         delete_btn.grid(row=0, column=2)
 
-        reset_btn = Button(btn_frame, text="Reset", width=15, font=("times new roman", 12, "bold"), bg="blue", fg="white")
+        reset_btn = Button(btn_frame, text="Reset", command=self.reset_data, width=15, font=("times new roman", 12, "bold"), bg="blue", fg="white")
         reset_btn.grid(row=0, column=3)
 
         photo_btn_frame = Frame(class_Student_frame, bd=2, bg="white")
@@ -230,7 +230,7 @@ class Student:
         scroll_x = Scrollbar(table_frame, orient=HORIZONTAL)
         scroll_y = Scrollbar(table_frame, orient=VERTICAL)
 
-        self.student_table = ttk.Treeview(table_frame, column=("dep", "course", "year", "sem", "id", "name", "div", "roll", "teacher", "email", "photo"), xscrollcommand=scroll_x.set, yscrollcommand=scroll_y.set)
+        self.student_table = ttk.Treeview(table_frame, column=("dep", "course", "year", "sem", "id", "name", "division", "roll", "teacher", "email", "photo"), xscrollcommand=scroll_x.set, yscrollcommand=scroll_y.set)
 
         scroll_x.pack(side=BOTTOM, fill=X)
         scroll_y.pack(side=RIGHT, fill=Y)
@@ -244,7 +244,7 @@ class Student:
         self.student_table.heading("sem", text="Semester")
         self.student_table.heading("id", text="Student ID")
         self.student_table.heading("name", text="Student Name")
-        self.student_table.heading("div", text="Division")
+        self.student_table.heading("division", text="Division")
         self.student_table.heading("roll", text="Roll No")
         self.student_table.heading("teacher", text="Teacher Name")
         self.student_table.heading("email", text="Teacher Email")
@@ -258,18 +258,20 @@ class Student:
         self.student_table.column("sem", width=100)
         self.student_table.column("id", width=100)
         self.student_table.column("name", width=100)
-        self.student_table.column("div", width=100)
+        self.student_table.column("division", width=100)
         self.student_table.column("roll", width=100)
         self.student_table.column("teacher", width=100)
         self.student_table.column("email", width=100)
         self.student_table.column("photo", width=150)
 
         self.student_table.pack(fill=BOTH, expand=1)
+        self.student_table.bind("<ButtonRelease-1>", self.get_cursor)
+        self.fetch_data()
 
     # Function Declaration
 
     def add_data(self):
-        if self.var_dep.get() == "Select Department" or self.var_course.get() == "Select Course" or self.var_year.get() == "Select Year" or self.var_semester.get() == "Select Semester" or self.var_studentID.get() == "" or self.var_studentName.get() == "" or self.var_div.get() == "" or self.var_roll.get() == "" or self.var_teacher.get() == "" or self.var_teacherEmail.get() == "":
+        if self.var_dep.get() == "Select Department" or self.var_course.get() == "Select Course" or self.var_year.get() == "Select Year" or self.var_semester.get() == "Select Semester" or self.var_studentID.get() == "" or self.var_studentName.get() == "" or self.var_division.get() == "" or self.var_roll.get() == "" or self.var_teacher.get() == "" or self.var_teacherEmail.get() == "":
             messagebox.showerror("Error", "All Fields are required", parent=self.root)
         else:
             try:
@@ -280,9 +282,9 @@ class Student:
                     self.var_course.get(),
                     self.var_year.get(),
                     self.var_semester.get(),
-                    self.var_studentID.get(),
                     self.var_studentName.get(),
-                    self.var_div.get(),
+                    self.var_studentName.get(),
+                    self.var_division.get(),
                     self.var_roll.get(),
                     self.var_teacher.get(),
                     self.var_teacherEmail.get(),
@@ -308,7 +310,90 @@ class Student:
             conn.commit()
         conn.close()
     
-    
+    def get_cursor(self, event=""):
+        cursor_row = self.student_table.focus()
+        content = self.student_table.item(cursor_row)
+        row = content["values"]
+
+        self.var_dep.set(row[0])
+        self.var_course.set(row[1])
+        self.var_year.set(row[2])
+        self.var_semester.set(row[3])
+        self.var_studentID.set(row[4])
+        self.var_studentName.set(row[5])
+        self.var_division.set(row[6])
+        self.var_roll.set(row[7])
+        self.var_teacher.set(row[8])
+        self.var_teacherEmail.set(row[9])
+        self.var_radio1.set(row[10])
+
+    def update_data(self):
+        if self.var_dep.get() == "Select Department" or self.var_course.get() == "Select Course" or self.var_year.get() == "Select Year" or self.var_semester.get() == "Select Semester" or self.var_studentID.get() == "" or self.var_studentName.get() == "" or self.var_division.get() == "" or self.var_roll.get() == "" or self.var_teacher.get() == "" or self.var_teacherEmail.get() == "":
+            messagebox.showerror("Error", "All Fields are required", parent=self.root)
+        else:
+            try:
+                update = messagebox.askyesno("Update", "Do you want to update this student details", parent=self.root)
+                if update > 0:
+                    conn = mysql.connector.connect(host="localhost", user="root", password="root", database="face_recognizer")
+                    my_cursor = conn.cursor()
+                    my_cursor.execute("update student set dep=%s, course=%s, year=%s, sem=%s, name=%s, division=%s, roll=%s, teacher=%s, email=%s, photo=%s where studentID=%s", (
+                        self.var_dep.get(),
+                        self.var_course.get(),
+                        self.var_year.get(),
+                        self.var_semester.get(),
+                        self.var_studentName.get(),
+                        self.var_division.get(),
+                        self.var_roll.get(),
+                        self.var_teacher.get(),
+                        self.var_teacherEmail.get(),
+                        self.var_radio1.get(),
+                        self.var_studentID.get()
+                    ))
+                else:
+                    if not update:
+                        return
+                messagebox.showinfo("Success", "Student Details Successfully Updated", parent=self.root)
+                conn.commit()
+                self.fetch_data()
+                conn.close()
+            except Exception as es:
+                messagebox.showerror("Error", f"Due To : {str(es)}", parent=self.root)
+
+    def delete_data(self):
+        if self.var_studentID.get() == "":
+            messagebox.showerror("Error", "Student ID must be required", parent=self.root)
+        else:
+            try:
+                delete = messagebox.askyesno("Student Delete Page", "Do you want to delete this student", parent=self.root)
+                if delete > 0:
+                    conn = mysql.connector.connect(host="localhost", user="root", password="root", database="face_recognizer")
+                    my_cursor = conn.cursor()
+                    sql = "DELETE FROM student WHERE studentID=%s"
+                    val = (self.var_studentID.get(),)
+                    my_cursor.execute(sql, val)
+                    conn.commit()
+                    conn.close()
+                    messagebox.showinfo("Delete", "Student Details Successfully Deleted", parent=self.root)
+                    self.fetch_data()  # Refresh the table view
+                else:
+                    if not delete:
+                        return
+            except Exception as es:
+                messagebox.showerror("Error", f"Due To : {str(es)}", parent=self.root)
+
+    def reset_data(self):
+        self.var_dep.set("Select Department")
+        self.var_course.set("Select Course")
+        self.var_year.set("Select Year")
+        self.var_semester.set("Select Semester")
+        self.var_studentID.set("")
+        self.var_studentName.set("")
+        self.var_division.set("")
+        self.var_roll.set("")
+        self.var_teacher.set("")
+        self.var_teacherEmail.set("")
+        self.var_radio1.set("")
+
 
 
 if __name__ == "__main__":
