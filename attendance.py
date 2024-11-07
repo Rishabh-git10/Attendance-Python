@@ -4,8 +4,11 @@ from tkinter import ttk
 from tkinter import messagebox
 import mysql.connector
 import cv2
+import os
+import csv
+from tkinter import filedialog
 
-
+mydata = []
 class Attendance:
     def __init__(self, root):
         self.root = root
@@ -123,7 +126,7 @@ class Attendance:
         btn_frame.place(x=0, y=150, width=585, height=40)
 
         # Import csv Button
-        import_csv_button = Button(btn_frame, text="Import CSV", width=15, font=(
+        import_csv_button = Button(btn_frame, text="Import CSV", command=self.import_csv, width=15, font=(
             "times new roman", 12, "bold"), bg="blue", fg="white")
         import_csv_button.grid(row=0, column=0)
 
@@ -186,11 +189,25 @@ class Attendance:
 
         self.AttendanceReportTable.bind("<ButtonRelease-1>", self.get_cursor)
 
+    # Fetch Data
+    def fetch_data(self, rows):
+        self.AttendanceReportTable.delete(*self.AttendanceReportTable.get_children())
+        for i in rows:
+            self.AttendanceReportTable.insert("", END, values=i)
+
+    # Import CSV
+    def import_csv(self):
+        global mydata
+        fln = filedialog.askopenfilename(initialdir=os.getcwd(), title="Open CSV", filetypes=(("CSV File", "*.csv"), ("All Files", "*.*")), parent=self.root)
+        with open(fln) as myfile:
+            csvread = csv.reader(myfile, delimiter=",")
+            for i in csvread:
+                mydata.append(i)
+            self.fetch_data(mydata)
+
+    # Get Cursor
     def get_cursor(self, event=""):
         pass
-
-
-
 
 
 
