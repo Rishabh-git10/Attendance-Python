@@ -1,4 +1,5 @@
 from tkinter import *
+from tkinter import messagebox
 from PIL import Image, ImageTk
 from tkinter import ttk
 from student import Student
@@ -102,10 +103,10 @@ class Face_Recognition_System:
         b7_1.place(x=350, y=450, width=150, height=40)
 
         # Exit Button
-        b8 = Button(bg_img, image=self.photoimg4, cursor="hand2")
+        b8 = Button(bg_img, image=self.photoimg4, cursor="hand2", command=self.exit)
         b8.place(x=600, y=300, width=150, height=150)
 
-        b8_1 = Button(bg_img, text="Exit", cursor="hand2", font=("times new roman", 15, "bold"))
+        b8_1 = Button(bg_img, text="Exit", cursor="hand2", command=self.exit, font=("times new roman", 15, "bold"))
         b8_1.place(x=600, y=450, width=150, height=40)
 
     def open_img(self):
@@ -136,6 +137,12 @@ class Face_Recognition_System:
         self.new_window = Toplevel(self.root)
         self.app = Help(self.new_window)
 
+    def exit(self):
+        self.exit = messagebox.askyesno("Face Recognition System", "Do you want to exit?", parent=self.root)
+        if self.exit > 0:
+            self.root.destroy()
+        else:
+            return
 
 if __name__ == "__main__":
     root = Tk()
