@@ -4,6 +4,7 @@ from tkinter import ttk
 from student import Student
 from train import Train
 from face_recognition import Face_Recognition
+from attendance import Attendance
 import os
 
 class Face_Recognition_System:
@@ -64,10 +65,10 @@ class Face_Recognition_System:
         b2_1.place(x=350, y=250, width=150, height=40)
 
         # Attendance Button
-        b3 = Button(bg_img, image=self.photoimg4, cursor="hand2")
+        b3 = Button(bg_img, image=self.photoimg4, cursor="hand2", command=self.attendance_data)
         b3.place(x=600, y=100, width=150, height=150)
 
-        b3_1 = Button(bg_img, text="Attendance", cursor="hand2", font=("times new roman", 15, "bold"))
+        b3_1 = Button(bg_img, text="Attendance", cursor="hand2", command=self.attendance_data, font=("times new roman", 15, "bold"))
         b3_1.place(x=600, y=250, width=150, height=40)
 
         # Help Button
@@ -120,6 +121,10 @@ class Face_Recognition_System:
     def face_data(self):
         self.new_window = Toplevel(self.root)
         self.app = Face_Recognition(self.new_window)
+
+    def attendance_data(self):
+        self.new_window = Toplevel(self.root)
+        self.app = Attendance(self.new_window)
 
 
 if __name__ == "__main__":
