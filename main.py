@@ -5,6 +5,7 @@ from student import Student
 from train import Train
 from face_recognition import Face_Recognition
 from attendance import Attendance
+from developer import Developer
 import os
 
 class Face_Recognition_System:
@@ -93,10 +94,10 @@ class Face_Recognition_System:
         b6_1.place(x=100, y=450, width=150, height=40)
 
         # Developer Button
-        b7 = Button(bg_img, image=self.photoimg4, cursor="hand2")
+        b7 = Button(bg_img, image=self.photoimg4, cursor="hand2", command=self.developer)
         b7.place(x=350, y=300, width=150, height=150)
 
-        b7_1 = Button(bg_img, text="Developer", cursor="hand2", font=("times new roman", 15, "bold"))
+        b7_1 = Button(bg_img, text="Developer", cursor="hand2", command=self.developer, font=("times new roman", 15, "bold"))
         b7_1.place(x=350, y=450, width=150, height=40)
 
         # Exit Button
@@ -125,6 +126,10 @@ class Face_Recognition_System:
     def attendance_data(self):
         self.new_window = Toplevel(self.root)
         self.app = Attendance(self.new_window)
+
+    def developer(self):
+        self.new_window = Toplevel(self.root)
+        self.app = Developer(self.new_window)
 
 
 if __name__ == "__main__":
