@@ -1,3 +1,4 @@
+from time import strftime
 from tkinter import *
 from tkinter import messagebox
 from PIL import Image, ImageTk
@@ -47,6 +48,16 @@ class Face_Recognition_System:
 
         title_lbl = Label(bg_img, text="Face Recognition System", font=("times new roman", 35, "bold"), bg="white", fg="darkgreen")
         title_lbl.place(x=0, y=0, width=1280, height=70)
+
+        # Time
+        def time():
+            string = strftime("%H:%M:%S %p")
+            lbl.config(text=string)
+            lbl.after(1000, time)
+
+        lbl = Label(title_lbl, font=("times new roman", 15, "bold"), background="white", foreground="darkgreen")
+        lbl.place(x=10, y=0, width=110, height=50)
+        time()
 
         # Button
         img4 = Image.open("./button.jpg")
