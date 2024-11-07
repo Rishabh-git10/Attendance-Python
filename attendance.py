@@ -131,7 +131,7 @@ class Attendance:
         import_csv_button.grid(row=0, column=0)
 
         # Export csv Button
-        export_csv_button = Button(btn_frame, text="Export CSV", width=15, font=(
+        export_csv_button = Button(btn_frame, text="Export CSV", command=self.export_csv, width=15, font=(
             "times new roman", 12, "bold"), bg="blue", fg="white")
         export_csv_button.grid(row=0, column=1)
 
@@ -204,6 +204,21 @@ class Attendance:
             for i in csvread:
                 mydata.append(i)
             self.fetch_data(mydata)
+
+    # Export CSV
+    def export_csv(self):
+        try:
+            if len(mydata) < 1:
+                messagebox.showerror("No Data", "No Data Found to Export", parent=self.root)
+                return False
+            fln = filedialog.asksaveasfilename(initialdir=os.getcwd(), title="Open CSV", filetypes=(("CSV File", "*.csv"), ("All Files", "*.*")), parent=self.root)
+            with open(fln, mode="w", newline="") as myfile:
+                exp_write = csv.writer(myfile, delimiter=",")
+                for i in mydata:
+                    exp_write.writerow(i)
+                messagebox.showinfo("Data Export", "Your Data Exported to " + os.path.basename(fln) + " successfully")
+        except Exception as es:
+            messagebox.showerror("Error", f"Due to : {str(es)}", parent=self.root)
 
     # Get Cursor
     def get_cursor(self, event=""):
