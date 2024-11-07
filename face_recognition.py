@@ -1,3 +1,5 @@
+from time import strftime
+from datetime import datetime
 from tkinter import *
 from PIL import Image, ImageTk
 from tkinter import ttk
@@ -34,6 +36,23 @@ class Face_Recognition:
         # Button
         b1 = Button(self.root, text="Face Recognition", command=self.face_recog, cursor="hand2", font=("times new roman", 15, "bold"), bg="blue", fg="white")
         b1.place(x=850, y=550, width=180, height=40)
+
+
+    # Attendance
+    def mark_attendance(self, id, n, r, d, y):
+        with open("Attendance.csv", "r+", newline="\n") as f:
+            myDataList = f.readlines()
+            name_list = []
+            for line in myDataList:
+                entry = line.split((","))
+                name_list.append(entry[0])
+            if ((n not in name_list) and (r not in name_list) and (d not in name_list) and (y not in name_list)):
+                now = datetime.now()
+                d1 = now.strftime("%d/%m/%Y")
+                dtString = now.strftime("%H:%M:%S")
+                f.writelines(f"\n{id},{n},{r},{d},{y},{dtString},{d1},Present")
+                
+
 
     # Face Recognition
     def face_recog(self):
@@ -74,6 +93,7 @@ class Face_Recognition:
                     cv2.putText(img, f"Roll: {r}", (x, y - 30), cv2.FONT_HERSHEY_SIMPLEX, 0.8, color, 1, cv2.LINE_AA)
                     cv2.putText(img, f"Department: {d}", (x, y - 5), cv2.FONT_HERSHEY_SIMPLEX, 0.8, color, 1, cv2.LINE_AA)
                     cv2.putText(img, f"Year: {y}", (x, y + 20), cv2.FONT_HERSHEY_SIMPLEX, 0.8, color, 1, cv2.LINE_AA)
+                    self.mark_attendance(id, n, r, d, y)
                 else:
                     cv2.rectangle(img, (x, y), (x + w, y + h), (0, 0, 255), 2)
                     cv2.putText(img, "Unknown Face", (x, y - 5), cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0, 0, 255), 1, cv2.LINE_AA)
