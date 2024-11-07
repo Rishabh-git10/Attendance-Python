@@ -15,6 +15,16 @@ class Attendance:
         self.root.geometry("1280x720+0+0")
         self.root.title("Face Recognition System")
 
+        # Variables
+        self.var_attendance_id = StringVar()
+        self.var_roll = StringVar()
+        self.var_name = StringVar()
+        self.var_department = StringVar()
+        self.var_time = StringVar()
+        self.var_date = StringVar()
+        self.var_attendance_status = StringVar()
+
+
         # First image
         img = Image.open("./attendance.jpg")
         img = img.resize((640, 100), Image.Resampling.BOX)
@@ -68,7 +78,7 @@ class Attendance:
             "times new roman", 12, "bold"), bg="white")
         attendanceID_label.grid(row=0, column=0, padx=10, pady=5, sticky=W)
 
-        attendanceID_entry = ttk.Entry(Left_inside_frame, width=20, font=("times new roman", 12, "bold"))
+        attendanceID_entry = ttk.Entry(Left_inside_frame, textvariable=self.var_attendance_id, width=20, font=("times new roman", 12, "bold"))
         attendanceID_entry.grid(row=0, column=1, padx=10, pady=5, sticky=W)
 
         # Roll
@@ -76,7 +86,7 @@ class Attendance:
             "times new roman", 12, "bold"), bg="white")
         roll_label.grid(row=0, column=2, padx=10, pady=5, sticky=W)
 
-        roll_entry = ttk.Entry(Left_inside_frame, width=20, font=("times new roman", 12, "bold"))
+        roll_entry = ttk.Entry(Left_inside_frame, textvariable=self.var_roll, width=20, font=("times new roman", 12, "bold"))
         roll_entry.grid(row=0, column=3, padx=10, pady=5, sticky=W)
 
         # Name
@@ -84,7 +94,7 @@ class Attendance:
             "times new roman", 12, "bold"), bg="white")
         name_label.grid(row=1, column=0, padx=10, pady=5, sticky=W)
 
-        name_entry = ttk.Entry(Left_inside_frame, width=20, font=("times new roman", 12, "bold"))
+        name_entry = ttk.Entry(Left_inside_frame, textvariable=self.var_name, width=20, font=("times new roman", 12, "bold"))
         name_entry.grid(row=1, column=1, padx=10, pady=5, sticky=W)
 
         # Department
@@ -92,7 +102,7 @@ class Attendance:
             "times new roman", 12, "bold"), bg="white")
         department_label.grid(row=1, column=2, padx=10, pady=5, sticky=W)
 
-        department_entry = ttk.Entry(Left_inside_frame, width=20, font=("times new roman", 12, "bold"))
+        department_entry = ttk.Entry(Left_inside_frame, textvariable=self.var_department, width=20, font=("times new roman", 12, "bold"))
         department_entry.grid(row=1, column=3, padx=10, pady=5, sticky=W)
 
         # Time
@@ -100,7 +110,7 @@ class Attendance:
             "times new roman", 12, "bold"), bg="white")
         time_label.grid(row=2, column=0, padx=10, pady=5, sticky=W)
 
-        time_entry = ttk.Entry(Left_inside_frame, width=20, font=("times new roman", 12, "bold"))
+        time_entry = ttk.Entry(Left_inside_frame, textvariable=self.var_time, width=20, font=("times new roman", 12, "bold"))
         time_entry.grid(row=2, column=1, padx=10, pady=5, sticky=W)
 
         # Date
@@ -108,7 +118,7 @@ class Attendance:
             "times new roman", 12, "bold"), bg="white")
         date_label.grid(row=2, column=2, padx=10, pady=5, sticky=W)
 
-        date_entry = ttk.Entry(Left_inside_frame, width=20, font=("times new roman", 12, "bold"))
+        date_entry = ttk.Entry(Left_inside_frame, textvariable=self.var_date, width=20, font=("times new roman", 12, "bold"))
         date_entry.grid(row=2, column=3, padx=10, pady=5, sticky=W)
 
         # Attendance Status
@@ -116,7 +126,7 @@ class Attendance:
             "times new roman", 12, "bold"), bg="white")
         attendance_status_label.grid(row=3, column=0, padx=10, pady=5, sticky=W)
 
-        attendance_status_entry = ttk.Combobox(Left_inside_frame, width=18, font=("times new roman", 12, "bold"), state="readonly")
+        attendance_status_entry = ttk.Combobox(Left_inside_frame, textvariable=self.var_attendance_status, width=18, font=("times new roman", 12, "bold"), state="readonly")
         attendance_status_entry["values"] = ("Status", "Present", "Absent")
 
         attendance_status_entry.grid(row=3, column=1, padx=10, pady=5, sticky=W)
@@ -135,13 +145,13 @@ class Attendance:
             "times new roman", 12, "bold"), bg="blue", fg="white")
         export_csv_button.grid(row=0, column=1)
 
-        # Delete Button
-        delete_button = Button(btn_frame, text="Delete", width=15, font=(
+        # Update Button
+        update_button = Button(btn_frame, text="Update", width=15, font=(
             "times new roman", 12, "bold"), bg="blue", fg="white")
-        delete_button.grid(row=0, column=2)
+        update_button.grid(row=0, column=2)
 
         # Reset Button
-        reset_button = Button(btn_frame, text="Reset", width=15, font=(
+        reset_button = Button(btn_frame, command=self.reset_data, text="Reset", width=15, font=(
             "times new roman", 12, "bold"), bg="blue", fg="white")
         reset_button.grid(row=0, column=3)
         
@@ -187,7 +197,7 @@ class Attendance:
 
         self.AttendanceReportTable.pack(fill=BOTH, expand=1)
 
-        self.AttendanceReportTable.bind("<ButtonRelease-1>", self.get_cursor)
+        self.AttendanceReportTable.bind("<ButtonRelease>", self.get_cursor)
 
     # Fetch Data
     def fetch_data(self, rows):
@@ -198,6 +208,7 @@ class Attendance:
     # Import CSV
     def import_csv(self):
         global mydata
+        mydata.clear()
         fln = filedialog.askopenfilename(initialdir=os.getcwd(), title="Open CSV", filetypes=(("CSV File", "*.csv"), ("All Files", "*.*")), parent=self.root)
         with open(fln) as myfile:
             csvread = csv.reader(myfile, delimiter=",")
@@ -222,7 +233,46 @@ class Attendance:
 
     # Get Cursor
     def get_cursor(self, event=""):
-        pass
+        cursor_row = self.AttendanceReportTable.focus()
+        content = self.AttendanceReportTable.item(cursor_row)
+        row = content["values"]
+
+        self.var_attendance_id.set(row[0])
+        self.var_roll.set(row[1])
+        self.var_name.set(row[2])
+        self.var_department.set(row[3])
+        self.var_time.set(row[4])
+        self.var_date.set(row[5])
+        self.var_attendance_status.set(row[6])
+
+    # Reset
+    def reset_data(self):
+        self.var_attendance_id.set("")
+        self.var_roll.set("")
+        self.var_name.set("")
+        self.var_department.set("")
+        self.var_time.set("")
+        self.var_date.set("")
+        self.var_attendance_status.set("")
+
+    # # Update
+    # def update_data(self):
+    #     global mydata
+    #     if self.var_attendance_id.get() == "" or self.var_roll.get() == "" or self.var_name.get() == "" or self.var_department.get() == "" or self.var_time.get() == "" or self.var_date.get() == "" or self.var_attendance_status.get() == "":
+    #         messagebox.showerror("Error", "All fields are required", parent=self.root)
+    #     else:
+    #         for i in range(len(mydata)):
+    #             if mydata[i][0] == self.var_attendance_id.get():
+    #                 mydata[i][1] = self.var_roll.get()
+    #                 mydata[i][2] = self.var_name.get()
+    #                 mydata[i][3] = self.var_department.get()
+    #                 mydata[i][4] = self.var_time.get()
+    #                 mydata[i][5] = self.var_date.get()
+    #                 mydata[i][6] = self.var_attendance_status.get()
+    #                 break
+    #         self.fetch_data(mydata)
+    #         self.export_csv()
+    #         messagebox.showinfo("Success", "Record updated successfully", parent=self.root)
 
 
 
