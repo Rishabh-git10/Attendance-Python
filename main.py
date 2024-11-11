@@ -2,7 +2,6 @@ from time import strftime
 from tkinter import *
 from tkinter import messagebox
 from PIL import Image, ImageTk
-from tkinter import ttk
 from student import Student
 from train import Train
 from face_recognition import Face_Recognition
@@ -59,10 +58,38 @@ class Face_Recognition_System:
         lbl.place(x=10, y=0, width=110, height=50)
         time()
 
-        # Button
-        img4 = Image.open("./button.jpg")
+        # Button Images
+        img4 = Image.open("./student_details.png")
         img4 = img4.resize((150, 150), Image.Resampling.LANCZOS)
         self.photoimg4 = ImageTk.PhotoImage(img4)
+
+        img5 = Image.open("./face_recognition.png")
+        img5 = img5.resize((150, 150), Image.Resampling.LANCZOS)
+        self.photoimg5 = ImageTk.PhotoImage(img5)
+
+        img6 = Image.open("./attendance.png")
+        img6 = img6.resize((150, 150), Image.Resampling.LANCZOS)
+        self.photoimg6 = ImageTk.PhotoImage(img6)
+
+        img7 = Image.open("./help.png")
+        img7 = img7.resize((150, 150), Image.Resampling.LANCZOS)
+        self.photoimg7 = ImageTk.PhotoImage(img7)
+
+        img8 = Image.open("./train_data.png")
+        img8 = img8.resize((150, 150), Image.Resampling.LANCZOS)
+        self.photoimg8 = ImageTk.PhotoImage(img8)
+
+        img9 = Image.open("./photos.png")
+        img9 = img9.resize((150, 150), Image.Resampling.LANCZOS)
+        self.photoimg9 = ImageTk.PhotoImage(img9)
+
+        img10 = Image.open("./developer.png")
+        img10 = img10.resize((150, 150), Image.Resampling.LANCZOS)
+        self.photoimg10 = ImageTk.PhotoImage(img10)
+
+        img11 = Image.open("./exit.png")
+        img11 = img11.resize((150, 150), Image.Resampling.LANCZOS)
+        self.photoimg11 = ImageTk.PhotoImage(img11)
 
         # Student Details Button
         b1 = Button(bg_img, image=self.photoimg4, command=self.student_details, cursor="hand2")
@@ -72,57 +99,56 @@ class Face_Recognition_System:
         b1_1.place(x=100, y=250, width=150, height=40)
         
         # Face Recognition Button
-        b2 = Button(bg_img, image=self.photoimg4, cursor="hand2", command=self.face_data)
-        b2.place(x=350, y=100, width=150, height=150)
+        b2 = Button(bg_img, image=self.photoimg5, cursor="hand2", command=self.face_data)
+        b2.place(x=375, y=100, width=150, height=150)
 
         b2_1 = Button(bg_img, text="Face Recognition", cursor="hand2", command=self.face_data, font=("times new roman", 15, "bold"))
-        b2_1.place(x=350, y=250, width=150, height=40)
+        b2_1.place(x=375, y=250, width=150, height=40)
 
         # Attendance Button
-        b3 = Button(bg_img, image=self.photoimg4, cursor="hand2", command=self.attendance_data)
-        b3.place(x=600, y=100, width=150, height=150)
+        b3 = Button(bg_img, image=self.photoimg6, cursor="hand2", command=self.attendance_data)
+        b3.place(x=625, y=100, width=150, height=150)
 
         b3_1 = Button(bg_img, text="Attendance", cursor="hand2", command=self.attendance_data, font=("times new roman", 15, "bold"))
-        b3_1.place(x=600, y=250, width=150, height=40)
+        b3_1.place(x=625, y=250, width=150, height=40)
 
         # Help Button
-        b4 = Button(bg_img, image=self.photoimg4, cursor="hand2", command=self.help)
+        b4 = Button(bg_img, image=self.photoimg7, cursor="hand2", command=self.help)
         b4.place(x=900, y=100, width=150, height=150)
 
         b4_1 = Button(bg_img, text="Help", cursor="hand2", command=self.help, font=("times new roman", 15, "bold"))
         b4_1.place(x=900, y=250, width=150, height=40)
 
         # Train Data Button
-        b5 = Button(bg_img, image=self.photoimg4, cursor="hand2", command=self.train_data)
-        b5.place(x=900, y=300, width=150, height=150)
+        b5 = Button(bg_img, image=self.photoimg8, cursor="hand2", command=self.train_data)
+        b5.place(x=375, y=300, width=150, height=150)
 
         b5_1 = Button(bg_img, text="Train Data", cursor="hand2", command=self.train_data, font=("times new roman", 15, "bold"))
-        b5_1.place(x=900, y=450, width=150, height=40)
+        b5_1.place(x=375, y=450, width=150, height=40)
 
         # Photos Button
-        b6 = Button(bg_img, image=self.photoimg4, cursor="hand2", command=self.open_img)
+        b6 = Button(bg_img, image=self.photoimg9, cursor="hand2", command=self.open_img)
         b6.place(x=100, y=300, width=150, height=150)
 
         b6_1 = Button(bg_img, text="Photos", cursor="hand2", command=self.open_img, font=("times new roman", 15, "bold"))
         b6_1.place(x=100, y=450, width=150, height=40)
 
         # Developer Button
-        b7 = Button(bg_img, image=self.photoimg4, cursor="hand2", command=self.developer)
-        b7.place(x=350, y=300, width=150, height=150)
+        b7 = Button(bg_img, image=self.photoimg10, cursor="hand2", command=self.developer)
+        b7.place(x=625, y=300, width=150, height=150)
 
         b7_1 = Button(bg_img, text="Developer", cursor="hand2", command=self.developer, font=("times new roman", 15, "bold"))
-        b7_1.place(x=350, y=450, width=150, height=40)
+        b7_1.place(x=625, y=450, width=150, height=40)
 
         # Exit Button
-        b8 = Button(bg_img, image=self.photoimg4, cursor="hand2", command=self.exit)
-        b8.place(x=600, y=300, width=150, height=150)
+        b8 = Button(bg_img, image=self.photoimg11, cursor="hand2", command=self.exit)
+        b8.place(x=900, y=300, width=150, height=150)
 
         b8_1 = Button(bg_img, text="Exit", cursor="hand2", command=self.exit, font=("times new roman", 15, "bold"))
-        b8_1.place(x=600, y=450, width=150, height=40)
+        b8_1.place(x=900, y=450, width=150, height=40)
 
     def open_img(self):
         os.startfile("data")
-
 
     def student_details(self):
         self.new_window = Toplevel(self.root)
