@@ -4,6 +4,17 @@ from PIL import Image, ImageTk
 from tkinter import messagebox
 import mysql.connector
 from main import Face_Recognition_System
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
+
+# Get database connection details from environment variables
+DB_HOST = os.getenv('DB_HOST')
+DB_PORT = os.getenv('DB_PORT')
+DB_USER = os.getenv('DB_USER')
+DB_PASSWORD = os.getenv('DB_PASSWORD')
+DB_NAME = os.getenv('DB_NAME')
 
 def Login():
     win = Tk()
@@ -56,7 +67,7 @@ class Login_Window:
             messagebox.showerror("Error", "All fields are required", parent=self.root)
         else:
             try:
-                con = mysql.connector.connect(host="localhost", user="root", password="root", database="login")
+                con = mysql.connector.connect(host=DB_HOST, user=DB_USER, password=DB_PASSWORD, database=DB_NAME, port=DB_PORT)
                 cur = con.cursor()
                 cur.execute("select * from users where email=%s and password=%s", (self.txt_user.get(), self.txt_pass.get()))
                 row = cur.fetchone()
@@ -76,7 +87,7 @@ class Login_Window:
             messagebox.showerror("Error", "Please enter the email address to reset your password", parent=self.root)
         else:
             try:
-                con = mysql.connector.connect(host="localhost", user="root", password="root", database="login")
+                con = mysql.connector.connect(host=DB_HOST, user=DB_USER, password=DB_PASSWORD, database=DB_NAME, port=DB_PORT)
                 cur = con.cursor()
                 query = "select * from users where email=%s"
                 value = (self.txt_user.get(),)
@@ -120,7 +131,7 @@ class Login_Window:
             messagebox.showerror("Error", "All fields are required", parent=self.root2)
         else:
             try:
-                con = mysql.connector.connect(host="localhost", user="root", password="root", database="login")
+                con = mysql.connector.connect(host=DB_HOST, user=DB_USER, password=DB_PASSWORD, database=DB_NAME, port=DB_PORT)
                 cur = con.cursor()
                 query = "select * from users where email=%s and security=%s and answer=%s"
                 value = (self.txt_user.get(), self.security.get(), self.answer.get())
@@ -227,7 +238,7 @@ class Register:
             messagebox.showerror("Error", "Please agree to the terms & conditions", parent=self.root)
         else:
             try:
-                con = mysql.connector.connect(host="localhost", user="root", password="root", database="login")
+                con = mysql.connector.connect(host=DB_HOST, user=DB_USER, password=DB_PASSWORD, database=DB_NAME, port=DB_PORT)
                 cur = con.cursor()
                 cur.execute("select * from users where email=%s", (self.email.get(),))
                 row = cur.fetchone()
